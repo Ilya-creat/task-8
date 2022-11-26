@@ -20,29 +20,28 @@ class Dialog(QDialog):
                 self.tableWidget.resizeRowsToContents()
         self.pushButton.clicked.connect(lambda: self.new_row(tableWidget))
 
-
     def new_row(self, tableWidget):
-        try:
-            con = sqlite3.connect('coffee.sqlite')
-            cur = con.cursor()
-            cur.execute("""
-                        INSERT INTO coffee VALUES (NULL, 'New coffee', '', '', '', -1, -1)
-                        """)
-            con.commit()
-            con = sqlite3.connect('coffee.sqlite')
-            cur = con.cursor()
-            ans = cur.execute("""
-            SELECT * FROM coffee
-            """).fetchall()
-            self.tableWidget.setRowCount(len(ans))
-            self.tableWidget.resizeColumnsToContents()
-            for i in range(self.tableWidget.rowCount()):
-                for j in range(self.tableWidget.columnCount()):
-                    self.tableWidget.setItem(i, j, QTableWidgetItem(str(ans[i][j])))
-                    self.tableWidget.resizeRowsToContents()
-        except Exception as e:
-            print(e)
-
+        def new_row(self, tableWidget):
+            try:
+                con = sqlite3.connect('coffee.sqlite')
+                cur = con.cursor()
+                cur.execute("""
+                            INSERT INTO coffee VALUES (NULL, 'New coffee', '', '', '', -1, -1)
+                            """)
+                con.commit()
+                con = sqlite3.connect('coffee.sqlite')
+                cur = con.cursor()
+                ans = cur.execute("""
+                SELECT * FROM coffee
+                """).fetchall()
+                self.tableWidget.setRowCount(len(ans))
+                self.tableWidget.resizeColumnsToContents()
+                for i in range(self.tableWidget.rowCount()):
+                    for j in range(self.tableWidget.columnCount()):
+                        self.tableWidget.setItem(i, j, QTableWidgetItem(str(ans[i][j])))
+                        self.tableWidget.resizeRowsToContents()
+            except Exception as e:
+                print(e)
 
 
 class Main(QMainWindow):
@@ -85,10 +84,6 @@ class Main(QMainWindow):
                     con.commit()
         except Exception as e:
             print(e)
-
-
-
-
 
 
 if __name__ == '__main__':
